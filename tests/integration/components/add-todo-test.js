@@ -1,26 +1,35 @@
 import { module, test } from 'qunit';
+// import { setupTest } from 'ember-qunit';
 import { setupRenderingTest } from 'todo-list/tests/helpers';
-import { render } from '@ember/test-helpers';
+import { click, fillIn, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
 module('Integration | Component | add-todo', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function (assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  test('it renders the content of the component properly', async function (assert) {
+    await render(hbs`<AddTodo />`);
+
+    assert.dom('[data-test-page-title]').exists();
+    assert.dom('[data-test-page-title]').hasText('Todos');
+    assert.dom('[data-test-page-title]').hasClass('font-extralight');
+    const input = assert.dom('[data-test-add-input]');
+    input.exists();
+    input.hasAttribute('placeholder', 'New todo?');
+  });
+
+  test('it adds a new todo in the todo list', async function (assert) {
+    const todoService = this.owner.lookup('service:todo');
 
     await render(hbs`<AddTodo />`);
 
-    assert.dom(this.element).hasText('');
+    assert.dom('[data-test-add-button]').exists();
 
-    // Template block usage:
-    await render(hbs`
-      <AddTodo>
-        template block text
-      </AddTodo>
-    `);
+    assert.strictEqual(todoService.getTodoList.length, 0);
 
-    assert.dom(this.element).hasText('template block text');
+    await fillIn('[data-test-add-input]', 'New todo');
+    await click('[data-test-add-button]');
+
+    assert.strictEqual(todoService.todoList[0].todoTitle, 'New todo');
   });
 });

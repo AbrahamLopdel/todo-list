@@ -1,7 +1,7 @@
-<h3 class="text-3xl text-red-400 font-extralight">List</h3>
+<h3 data-test-list-title class="text-3xl text-red-400 font-extralight">List</h3>
 
-<ul>
-  {{#each this.todoService.todoList as |todo|}}
+<ul data-test-list-todos>
+  {{#each this.todoService.getTodoList as |todo|}}
     <li class="text-white">
       {{todo.todoTitle}}
     </li>
