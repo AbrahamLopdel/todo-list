@@ -1,1 +1,14 @@
-{{yield}}
+<h1 class="text-7xl text-red-400 font-extralight">Todos</h1>
+
+<form {{on "submit" this.handleSubmit}}>
+  <label>
+    <input
+      placeholder="New todo?"
+      name="todoTitle"
+      class="m-10 pl-10 p-4 w-5/12 h-16 shadow-lg text-lg border border-neutral-100 font-extralight"
+      {{on "input" this.handleChangeTodoValue}}
+    />
+  </label>
+
+  <button class="w-0 h-0" type="submit" />
+</form>
