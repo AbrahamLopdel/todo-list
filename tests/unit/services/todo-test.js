@@ -4,9 +4,12 @@ import { setupTest } from 'todo-list/tests/helpers';
 module('Unit | Service | todo', function (hooks) {
   setupTest(hooks);
 
-  // TODO: Replace this with your real tests.
   test('it exists', function (assert) {
-    let service = this.owner.lookup('service:todo');
-    assert.ok(service);
+    const todoService = this.owner.lookup('service:todo');
+    assert.ok(todoService);
+
+    todoService.addTodo('New todo');
+
+    assert.strictEqual(todoService.getTodoList[0].todoTitle, 'New todo');
   });
 });
