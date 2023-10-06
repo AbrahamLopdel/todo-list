@@ -25,6 +25,7 @@ export default class AddTodoComponent extends Component {
 
     if (!this.changeset.changes.length) {
       this.todoService.addTodo(this.todo.todoTitle);
+      this.changeset.todoTitle = '';
     }
   }
 }

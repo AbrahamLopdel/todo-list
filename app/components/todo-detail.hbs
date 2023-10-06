@@ -1,0 +1,14 @@
+<form {{on "submit" this.handleSubmit}}>
+  <label>
+    <input
+      type="text"
+      placeholder="Change the title"
+      name="todoTitle"
+      value={{this.todo.todoTitle}}
+      class="text-center text-7xl text-red-400 font-extralight"
+      {{on "input" this.handleChangeTodo}}
+    />
+  </label>
+
+  <button data-test-add-button class="w-0 h-0" type="submit" />
+</form>

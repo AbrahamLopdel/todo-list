@@ -1,9 +1,16 @@
-<h3 data-test-list-title class="text-3xl text-red-400 font-extralight">List</h3>
+<LinkTo @route="index">
+  <h3
+    data-test-list-title
+    class="my-4 text-3xl text-red-400 font-extralight px-3"
+  >
+    List
+  </h3>
+</LinkTo>
 
 <ul data-test-list-todos>
   {{#each this.todoService.getTodoList as |todo|}}
-    <li class="text-white">
-      {{todo.todoTitle}}
+    <li>
+      <Sidebar::TodoCard @todo={{todo}} />
     </li>
   {{/each}}
 </ul>

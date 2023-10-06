@@ -6,9 +6,17 @@ export default class TodoService extends Service {
   private todoList = new TrackedArray();
 
   @action
-  addTodo(todoTitle: unknown) {
-    const todo = { todoTitle };
+  addTodo(todoTitle: string) {
+    const todo = {
+      id: this.todoList.length,
+      todoTitle,
+    };
     this.todoList.push(todo);
+  }
+
+  @action
+  editTodo(todoId: string) {
+    console.log('Edit todo');
   }
 
   get getTodoList() {
