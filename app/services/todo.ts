@@ -1,17 +1,18 @@
 import Service from '@ember/service';
 import { action } from '@ember/object';
 import { TrackedArray } from 'tracked-built-ins';
+import { TodoType } from 'todo-list/types/todo';
 
 export default class TodoService extends Service {
-  private todoList = new TrackedArray();
+  #todoList = new TrackedArray<TodoType>();
 
   @action
   addTodo(todoTitle: string) {
-    const todo = {
-      id: this.todoList.length,
+    const todo: TodoType = {
+      id: this.#todoList.length.toString(),
       todoTitle,
     };
-    this.todoList.push(todo);
+    this.#todoList.push(todo);
   }
 
   @action
@@ -20,6 +21,6 @@ export default class TodoService extends Service {
   }
 
   get getTodoList() {
-    return this.todoList;
+    return this.#todoList;
   }
 }
