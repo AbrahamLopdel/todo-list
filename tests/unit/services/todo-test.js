@@ -10,6 +10,6 @@ module('Unit | Service | todo', function (hooks) {
 
     todoService.addTodo('New todo');
 
-    assert.strictEqual(todoService.getTodoList[0].todoTitle, 'New todo');
+    assert.strictEqual(todoService.todoList[0].todoTitle, 'New todo');
   });
 });
