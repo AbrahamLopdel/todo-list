@@ -11,6 +11,7 @@
       placeholder="New todo?"
       value={{this.changeset.todoTitle}}
       class="m-10 pl-10 p-4 w-5/12 h-16 shadow-lg text-lg border border-neutral-100 font-extralight"
+      {{autofocus}}
       {{on "input" this.handleChangeTodoValue}}
     />
   </label>

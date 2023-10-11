@@ -8,7 +8,7 @@
 </LinkTo>
 
 <ul data-test-list-todos>
-  {{#each this.todoService.getTodoList as |todo|}}
+  {{#each this.todoService.todoList as |todo|}}
     <li>
       <Sidebar::TodoCard @todo={{todo}} />
     </li>

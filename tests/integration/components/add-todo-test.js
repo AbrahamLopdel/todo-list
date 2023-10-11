@@ -25,7 +25,7 @@ module('Integration | Component | add-todo', function (hooks) {
 
     assert.dom('[data-test-add-button]').exists();
 
-    assert.strictEqual(todoService.getTodoList.length, 0);
+    assert.strictEqual(todoService.todoList.length, 0);
 
     await fillIn('[data-test-add-input]', 'New todo');
     await click('[data-test-add-button]');

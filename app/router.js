@@ -8,4 +8,5 @@ export default class Router extends EmberRouter {
 
 Router.map(function () {
   this.route('todo', { path: '/todo/:id' });
+  this.route('redirect', { path: '/*path' });
 });

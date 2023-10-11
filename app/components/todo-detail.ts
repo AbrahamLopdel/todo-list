@@ -3,13 +3,16 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { Changeset } from 'ember-changeset';
 import TodoService from 'todo-list/services/todo';
-import { TrackedObject } from 'tracked-built-ins';
+import { TodoType } from 'todo-list/types/todo';
 
-export default class TodoDetailComponent extends Component {
+interface TodoDetailArgs {
+  todo: TodoType;
+}
+
+export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   @service('todo') todoService!: TodoService;
-  todo = new TrackedObject((this.args as any).todo);
 
-  changeset: any = Changeset(this.todo);
+  changeset = Changeset(this.args.todo);
 
   @action handleChangeTodo(ev: any) {
     ev.preventDefault();
@@ -20,9 +23,14 @@ export default class TodoDetailComponent extends Component {
   @action
   async handleSubmit(ev: any) {
     ev.preventDefault();
+
+    this.changeset.set('id', this.args.todo.id);
     await this.changeset.save();
+
     if (!this.changeset.changes.length) {
-      this.todoService.editTodo(this.todo.id);
+      console.log(this.args.todo);
+
+      this.todoService.editTodo({ ...this.args.todo });
     }
   }
 }

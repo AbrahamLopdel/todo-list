@@ -1,14 +1,36 @@
-<form {{on "submit" this.handleSubmit}}>
+<img class="w-6 right-4 absolute" src="/edit-18.svg" alt="Delete todo" />
+<form class="flex flex-col" {{on "submit" this.handleSubmit}}>
   <label>
     <input
       type="text"
       placeholder="Change the title"
       name="todoTitle"
-      value={{this.todo.todoTitle}}
-      class="text-center text-7xl text-red-400 font-extralight"
+      value={{@todo.todoTitle}}
+      class="text-center text-5xl font-extralight"
+      {{on "input" this.handleChangeTodo}}
+    />
+  </label>
+  <label>
+    <textarea
+      placeholder="Write a description..."
+      maxlength="160"
+      rows="6"
+      cols="50"
+      name="todoDescription"
+      value={{@todo.todoDescription}}
+      class="border border-neutral-200 rounded-lg resize-none m-4 p-2 text-lg font-extralight"
       {{on "input" this.handleChangeTodo}}
     />
   </label>
 
-  <button data-test-add-button class="w-0 h-0" type="submit" />
+  <div>
+    <button
+      data-test-add-button
+      class="px-2 py-1.5 rounded-md text-white font-extralight bg-blue-500 w-16"
+      type="submit"
+    >
+      Save
+    </button>
+
+  </div>
 </form>
