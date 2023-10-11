@@ -4,6 +4,7 @@ import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
+import { Changeset } from 'ember-changeset';
 
 export default class TodoRoute extends Route {
   @service declare router: RouterService;
@@ -32,10 +33,9 @@ export default class TodoRoute extends Route {
     const todo = this.todoService.todoList.find(
       (todoItem: TodoType) => todoItem.id === id
     );
-    console.log('todo: ', todo);
 
     return {
-      todo,
+      todoChangeset: Changeset(todo as TodoType),
     };
   }
 }

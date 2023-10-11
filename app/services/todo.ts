@@ -4,17 +4,24 @@ import { TrackedArray } from 'tracked-built-ins';
 import { TodoType } from 'todo-list/types/todo';
 
 export default class TodoService extends Service {
-  #todoList = new TrackedArray<TodoType>(
-    JSON.parse(localStorage.getItem('TODOS') || '[]')
-  );
-  private static lastID: number = parseInt(
-    localStorage.getItem('LAST_ID.TODOS') || '0'
-  );
+  #todoList;
+  static #lastID: number;
+
+  constructor(properties: object) {
+    super(properties);
+
+    this.#todoList = new TrackedArray<TodoType>(
+      JSON.parse(localStorage.getItem('TODOS') || '[]')
+    );
+    TodoService.#lastID = parseInt(
+      localStorage.getItem('LAST_ID.TODOS') || '0'
+    );
+  }
 
   @action
   addTodo(todoTitle: string) {
     const todo = {
-      id: (++TodoService.lastID).toString(),
+      id: (++TodoService.#lastID).toString(),
       todoTitle,
     };
     this.#todoList.push(todo);
@@ -25,12 +32,13 @@ export default class TodoService extends Service {
 
   @action
   editTodo(newTodo: TodoType) {
-    const lastTodo = this.#todoList.find(
-      (todoInList) => (todoInList as TodoType).id === newTodo.id
-    );
-    const index = this.#todoList.indexOf(lastTodo!);
+    // const lastTodo = this.#todoList.find(
+    //   (todoInList) => (todoInList as TodoType).id === newTodo.id
+    // );
+    // const index = this.#todoList.indexOf(lastTodo!);
+    console.log(this.todoList);
 
-    this.#todoList[index] = newTodo;
+    // this.#todoList[index] = newTodo;
 
     localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
   }
@@ -43,7 +51,7 @@ export default class TodoService extends Service {
     this.#todoList.splice(index, 1);
   }
 
-  get todoList() {
-    return this.#todoList;
+  get todoList(): TrackedArray<TodoType> {
+    return new TrackedArray<TodoType>(this.#todoList);
   }
 }

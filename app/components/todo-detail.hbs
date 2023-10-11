@@ -1,36 +1,124 @@
 <img class="w-6 right-4 absolute" src="/edit-18.svg" alt="Delete todo" />
-<form class="flex flex-col" {{on "submit" this.handleSubmit}}>
-  <label>
+<form class="flex flex-col items-center" {{on "submit" this.handleSubmit}}>
+  <label class="w-min">
     <input
       type="text"
       placeholder="Change the title"
       name="todoTitle"
-      value={{@todo.todoTitle}}
+      value={{@todoChangeset.todoTitle}}
       class="text-center text-5xl font-extralight"
       {{on "input" this.handleChangeTodo}}
     />
   </label>
-  <label>
+  <label class="my-4 w-min">
     <textarea
       placeholder="Write a description..."
+      name="todoDescription"
       maxlength="160"
       rows="6"
       cols="50"
-      name="todoDescription"
-      value={{@todo.todoDescription}}
-      class="border border-neutral-200 rounded-lg resize-none m-4 p-2 text-lg font-extralight"
+      value={{@todoChangeset.todoDescription}}
+      class="border border-neutral-200 rounded-lg resize-none p-2 text-lg font-extralight"
       {{on "input" this.handleChangeTodo}}
     />
   </label>
 
-  <div>
-    <button
-      data-test-add-button
-      class="px-2 py-1.5 rounded-md text-white font-extralight bg-blue-500 w-16"
-      type="submit"
-    >
-      Save
-    </button>
+  <label class="mb-4 w-min">
+    <input
+      type="date"
+      name="todoDueDate"
+      min={{this.today}}
+      class="border border-neutral-200 rounded-lg p-2 text-lg font-extralight"
+      value={{@todoChangeset.todoDueDate}}
+      {{on "input" this.handleChangeTodo}}
+    />
+  </label>
 
-  </div>
+  {{#if @todoChangeset.todoDueDate}}
+    <div>
+      <p class="text-lg">Notification:</p>
+      <div class="flex flex-row">
+        {{#if
+          (gte
+            (moment-diff this.today @todoChangeset.todoDueDate precision="days")
+            1
+          )
+        }}
+          <label class="flex flex-row m-4">
+            One day before
+            <input
+              class="ml-2"
+              type="checkbox"
+              name="notification.oneDay"
+              checked={{@todoChangeset.todoNotification.oneDay}}
+              {{on "input" this.handleChangeTodo}}
+            />
+          </label>
+        {{/if}}
+
+        {{#if
+          (gte
+            (moment-diff this.today @todoChangeset.todoDueDate precision="days")
+            3
+          )
+        }}
+          <label class="flex flex-row m-4">
+            Three days before
+            <input
+              class="ml-2"
+              type="checkbox"
+              name="notification.threeDays"
+              checked={{@todoChangeset.todoNotification.threeDays}}
+              {{on "input" this.handleChangeTodo}}
+            />
+          </label>
+        {{/if}}
+
+        {{#if
+          (gte
+            (moment-diff this.today @todoChangeset.todoDueDate precision="days")
+            7
+          )
+        }}
+          <label class="flex flex-row m-4">
+            One week before
+            <input
+              class="ml-2"
+              type="checkbox"
+              name="notification.week"
+              checked={{@todoChangeset.todoNotification.week}}
+              {{on "input" this.handleChangeTodo}}
+            />
+          </label>
+        {{/if}}
+
+        {{#if
+          (gte
+            (moment-diff this.today @todoChangeset.todoDueDate precision="days")
+            30
+          )
+        }}
+          <label class="flex flex-row m-4">
+            One month before
+            <input
+              class="ml-2"
+              type="checkbox"
+              name="notification.month"
+              checked={{@todoChangeset.todoNotification.month}}
+              {{on "input" this.handleChangeTodo}}
+            />
+          </label>
+        {{/if}}
+
+      </div>
+    </div>
+  {{/if}}
+
+  <button
+    data-test-add-button
+    class="px-2 py-1.5 rounded-md text-white font-extralight bg-blue-500 w-16"
+    type="submit"
+  >
+    Save
+  </button>
 </form>
