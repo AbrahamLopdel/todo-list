@@ -1,9 +1,12 @@
-import Service from '@ember/service';
+import Service, { service } from '@ember/service';
 import { action } from '@ember/object';
 import { TrackedArray } from 'tracked-built-ins';
 import { TodoType } from 'todo-list/types/todo';
+import TodoLocalStorageService from './todo-local-storage';
 
 export default class TodoService extends Service {
+  @service declare todoLocalStorage: TodoLocalStorageService;
+
   #todoList;
   static #lastID: number;
 
@@ -11,11 +14,9 @@ export default class TodoService extends Service {
     super(properties);
 
     this.#todoList = new TrackedArray<TodoType>(
-      JSON.parse(localStorage.getItem('TODOS') || '[]')
+      JSON.parse(this.todoLocalStorage.getTodoList() || '[]')
     );
-    TodoService.#lastID = parseInt(
-      localStorage.getItem('LAST_ID.TODOS') || '0'
-    );
+    TodoService.#lastID = parseInt(this.todoLocalStorage.getLastId() || '0');
   }
 
   @action
@@ -26,8 +27,8 @@ export default class TodoService extends Service {
     };
     this.#todoList.push(todo);
 
-    localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
-    localStorage.setItem('LAST_ID.TODOS', todo.id);
+    this.todoLocalStorage.setTodoList();
+    this.todoLocalStorage.setLastId(todo.id);
   }
 
   @action
@@ -39,7 +40,7 @@ export default class TodoService extends Service {
 
     this.#todoList[index] = newTodo;
 
-    localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
+    this.todoLocalStorage.setTodoList();
   }
 
   @action
@@ -49,7 +50,7 @@ export default class TodoService extends Service {
 
     this.#todoList.splice(index, 1);
 
-    localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
+    this.todoLocalStorage.setTodoList();
   }
 
   get todoList(): TrackedArray<TodoType> {
