@@ -34,27 +34,22 @@
     />
   </label>
 
-  {{#if @todoChangeset.todoDueDate}}
+  {{#if
+    (gte (moment-diff this.today @todoChangeset.todoDueDate precision="days") 1)
+  }}
     <div>
       <p class="text-lg">Notification:</p>
       <div class="flex flex-row">
-        {{#if
-          (gte
-            (moment-diff this.today @todoChangeset.todoDueDate precision="days")
-            1
-          )
-        }}
-          <label class="flex flex-row m-4">
-            One day before
-            <input
-              class="ml-2"
-              type="checkbox"
-              name="notification.oneDay"
-              checked={{@todoChangeset.todoNotification.oneDay}}
-              {{on "input" this.handleChangeTodo}}
-            />
-          </label>
-        {{/if}}
+        <label class="flex flex-row m-4">
+          One day before
+          <input
+            class="ml-2"
+            type="checkbox"
+            name="notification.oneDay"
+            checked={{@todoChangeset.todoNotification.oneDay}}
+            {{on "input" this.handleChangeTodo}}
+          />
+        </label>
 
         {{#if
           (gte

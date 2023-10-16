@@ -58,7 +58,6 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
         );
 
         if (thereIsANotification && numberOfDays > diffDays) {
-          console.log(nameNotification, thereIsANotification);
           this.args.todoChangeset.set(
             `todoNotification.${nameNotification}`,
             false
@@ -75,7 +74,7 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
     await this.args.todoChangeset.save();
 
     if (!this.args.todoChangeset.changes.length) {
-      this.todoService.editTodo({} as TodoType);
+      this.todoService.editTodo(this.args.todoChangeset.data as TodoType);
     }
   }
 }

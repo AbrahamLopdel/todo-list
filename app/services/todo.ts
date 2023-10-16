@@ -32,13 +32,12 @@ export default class TodoService extends Service {
 
   @action
   editTodo(newTodo: TodoType) {
-    // const lastTodo = this.#todoList.find(
-    //   (todoInList) => (todoInList as TodoType).id === newTodo.id
-    // );
-    // const index = this.#todoList.indexOf(lastTodo!);
-    console.log(this.todoList);
+    const lastTodo = this.#todoList.find(
+      (todoInList) => (todoInList as TodoType).id === newTodo.id
+    );
+    const index = this.#todoList.indexOf(lastTodo!);
 
-    // this.#todoList[index] = newTodo;
+    this.#todoList[index] = newTodo;
 
     localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
   }
@@ -49,6 +48,8 @@ export default class TodoService extends Service {
     const index = this.#todoList.indexOf(todo!);
 
     this.#todoList.splice(index, 1);
+
+    localStorage.setItem('TODOS', JSON.stringify(this.#todoList));
   }
 
   get todoList(): TrackedArray<TodoType> {
