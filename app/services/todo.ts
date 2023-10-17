@@ -13,9 +13,7 @@ export default class TodoService extends Service {
   constructor(properties: object) {
     super(properties);
 
-    this.#todoList = new TrackedArray<TodoType>(
-      JSON.parse(this.todoLocalStorage.getTodoList() || '[]')
-    );
+    this.#todoList = this.todoLocalStorage.getTodoList();
     TodoService.#lastID = parseInt(this.todoLocalStorage.getLastId() || '0');
   }
 
@@ -27,7 +25,7 @@ export default class TodoService extends Service {
     };
     this.#todoList.push(todo);
 
-    this.todoLocalStorage.setTodoList();
+    this.todoLocalStorage.setTodoList(this.#todoList);
     this.todoLocalStorage.setLastId(todo.id);
   }
 
@@ -40,7 +38,7 @@ export default class TodoService extends Service {
 
     this.#todoList[index] = newTodo;
 
-    this.todoLocalStorage.setTodoList();
+    this.todoLocalStorage.setTodoList(this.#todoList);
   }
 
   @action
@@ -50,7 +48,7 @@ export default class TodoService extends Service {
 
     this.#todoList.splice(index, 1);
 
-    this.todoLocalStorage.setTodoList();
+    this.todoLocalStorage.setTodoList(this.#todoList);
   }
 
   get todoList(): TrackedArray<TodoType> {

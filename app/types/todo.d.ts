@@ -4,9 +4,9 @@ export type TodoType = {
   todoDescription?: string;
   todoDueDate?: Date;
   todoNotification?: {
-    oneDay: boolean;
-    threeDays: boolean;
-    week: boolean;
-    month: boolean;
+    oneDay?: boolean;
+    threeDays?: boolean;
+    week?: boolean;
+    month?: boolean;
   };
 };
