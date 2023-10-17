@@ -1,7 +1,13 @@
-<img class="w-6 right-4 absolute" src="/edit-18.svg" alt="Delete todo" />
+<img
+  data-test-edit-icon
+  class="w-6 right-4 absolute"
+  src="/edit-18.svg"
+  alt="Edit todo"
+/>
 <form class="flex flex-col items-center" {{on "submit" this.handleSubmit}}>
   <label class="w-min">
     <input
+      data-test-input-title
       type="text"
       placeholder="Change the title"
       name="todoTitle"
@@ -12,6 +18,7 @@
   </label>
   <label class="my-4 w-min">
     <textarea
+      data-test-input-description
       placeholder="Write a description..."
       name="todoDescription"
       maxlength="160"
@@ -25,6 +32,7 @@
 
   <label class="mb-4 w-min">
     <input
+      data-test-input-date
       type="date"
       name="todoDueDate"
       min={{this.today}}
@@ -40,7 +48,7 @@
     <div>
       <p class="text-lg">Notification:</p>
       <div class="flex flex-row">
-        <label class="flex flex-row m-4">
+        <label data-test-label-notif-one-day class="flex flex-row m-4">
           One day before
           <input
             class="ml-2"
@@ -57,7 +65,7 @@
             3
           )
         }}
-          <label class="flex flex-row m-4">
+          <label data-test-label-notif-three-days class="flex flex-row m-4">
             Three days before
             <input
               class="ml-2"
@@ -75,7 +83,7 @@
             7
           )
         }}
-          <label class="flex flex-row m-4">
+          <label data-test-label-notif-week class="flex flex-row m-4">
             One week before
             <input
               class="ml-2"
@@ -93,7 +101,7 @@
             30
           )
         }}
-          <label class="flex flex-row m-4">
+          <label data-test-label-notif-month class="flex flex-row m-4">
             One month before
             <input
               class="ml-2"
