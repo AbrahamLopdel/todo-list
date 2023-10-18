@@ -14,17 +14,20 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
   @service('todo') declare todoService: TodoService;
 
   @action
-  removeTodo(ev: any) {
+  removeTodo(ev: Event) {
     ev.preventDefault();
     this.todoService.removeTodo(this.args.todo.id);
 
-    const { id: currentRouterId } = this.router.currentRoute.params;
-    const todo = this.todoService.todoList.find(
-      (todoItem: TodoType) => todoItem.id === currentRouterId
-    );
+    const { id: currentRouterId } = this.router.currentRoute?.params || '';
 
-    if (!todo) {
-      this.router.transitionTo('index');
+    if (currentRouterId === '') {
+      const todo = this.todoService.todoList.find(
+        (todoItem: TodoType) => todoItem.id === currentRouterId
+      );
+
+      if (!todo) {
+        this.router.transitionTo('index');
+      }
     }
   }
 }

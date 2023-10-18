@@ -43,7 +43,7 @@ export default class TodoService extends Service {
 
   @action
   removeTodo(todoId: string) {
-    const todo = this.#todoList.find((todo) => (todo as TodoType).id == todoId);
+    const todo = this.#todoList.find((todo) => todo.id == todoId);
     const index = this.#todoList.indexOf(todo!);
 
     this.#todoList.splice(index, 1);

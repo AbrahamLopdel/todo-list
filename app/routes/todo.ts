@@ -35,7 +35,7 @@ export default class TodoRoute extends Route {
     );
 
     return {
-      todoChangeset: Changeset({ ...(todo as TodoType) }),
+      todoChangeset: Changeset({ ...todo }),
     };
   }
 }
