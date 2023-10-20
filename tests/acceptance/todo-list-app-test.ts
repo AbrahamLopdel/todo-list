@@ -18,6 +18,7 @@ module('Acceptance | todo list app', function (hooks) {
     const todo: TodoType = {
       id: '000',
       todoTitle: 'New Todo',
+      todoChecked: false,
     };
 
     await todoLocalStorageService.setTodoList(

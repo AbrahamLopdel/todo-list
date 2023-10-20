@@ -22,7 +22,8 @@
     "lint:js:fix": "eslint . --fix",
     "start": "npx tailwindcss init -p && ember serve",
     "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
-    "test:ember": "ember test"
+    "test:ember": "ember test",
+    "gc": "EMBER_TYPESCRIPT_BLUEPRINTS=true ember generate component ${name} -ns -gc"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.3",

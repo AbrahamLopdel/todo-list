@@ -7,8 +7,10 @@
   </h3>
 </LinkTo>
 
-<ul data-test-list-todos>
-  {{#each this.todoService.todoList as |todo|}}
+<Sidebar::FilterButtons />
+
+<ul data-test-list-todos class="h-5/6 overflow-y-scroll scrollbar">
+  {{#each this.todoService.filteredTodoList as |todo|}}
     <li>
       <Sidebar::TodoCard @todo={{todo}} />
     </li>

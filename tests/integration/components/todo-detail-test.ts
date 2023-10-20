@@ -13,6 +13,7 @@ module('Integration | Component | todo-detail', function (hooks) {
     const todo: TodoType = {
       id: '2000',
       todoTitle: 'New Todo',
+      todoChecked: false,
     };
 
     this.setProperties({
@@ -34,6 +35,7 @@ module('Integration | Component | todo-detail', function (hooks) {
     const todo: TodoType = {
       id: '2000',
       todoTitle: 'New Todo',
+      todoChecked: false,
     };
 
     this.setProperties({
@@ -57,6 +59,7 @@ module('Integration | Component | todo-detail', function (hooks) {
       id: '2000',
       todoTitle: 'New Todo',
       todoDueDate: date,
+      todoChecked: false,
     };
 
     this.setProperties({
@@ -100,6 +103,7 @@ module('Integration | Component | todo-detail', function (hooks) {
       todoNotification: {
         threeDays: true,
       },
+      todoChecked: false,
     };
 
     this.setProperties({

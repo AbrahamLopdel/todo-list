@@ -3,7 +3,18 @@
     class="group px-4 pt-3 text-white ease-out duration-300 hover:bg-slate-400 hover:text-black"
   >
     <section class="flex justify-between align-middle">
-      <h2>{{@todo.todoTitle}}</h2>
+      <form>
+        <label class="flex flex-row">
+          <input
+            class="mr-2 w-4"
+            type="checkbox"
+            name="todoChecked"
+            checked={{this.changeset.todoChecked}}
+            {{on "click" this.handleChangeDone}}
+          />
+          <h2>{{@todo.todoTitle}}</h2>
+        </label>
+      </form>
       <button
         data-test-delete-button
         type="button"

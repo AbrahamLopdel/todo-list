@@ -2,6 +2,7 @@ import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
+import { Changeset } from 'ember-changeset';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
 
@@ -13,6 +14,18 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
   @service declare router: RouterService;
   @service('todo') declare todoService: TodoService;
 
+  changeset = Changeset(this.args.todo);
+
+  @action
+  handleChangeDone(ev: any) {
+    ev.stopPropagation();
+
+    this.changeset.set('todoChecked', ev.target.checked);
+    this.changeset.save();
+
+    this.todoService.editTodo(this.changeset.data as TodoType);
+  }
+
   @action
   removeTodo(ev: Event) {
     ev.preventDefault();
@@ -20,14 +33,12 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
 
     const { id: currentRouterId } = this.router.currentRoute?.params || '';
 
-    if (currentRouterId === '') {
-      const todo = this.todoService.todoList.find(
-        (todoItem: TodoType) => todoItem.id === currentRouterId
-      );
+    const todo = this.todoService.todoList.find(
+      (todoItem: TodoType) => todoItem.id === currentRouterId
+    );
 
-      if (!todo) {
-        this.router.transitionTo('index');
-      }
+    if (!todo) {
+      this.router.transitionTo('index');
     }
   }
 }

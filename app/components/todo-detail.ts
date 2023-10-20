@@ -27,20 +27,25 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   }
 
   @action
-  handleChangeTodo(ev: any) {
+  handleChangeTodo(ev: InputEvent) {
     ev.preventDefault();
 
-    const targetName = ev.target.name;
+    if (!ev.target) {
+      return;
+    }
+
+    const inputEl = ev.target as HTMLInputElement;
+    const targetName = inputEl.name;
     if (targetName.includes('notification')) {
       // Enters just if input is a checkbox of notifcication
       const valueNotif = targetName.split('.')[1];
 
       this.args.todoChangeset.set(
         `todoNotification.${valueNotif}`,
-        ev.target.checked
+        inputEl.checked
       );
     } else {
-      this.args.todoChangeset.set(targetName, ev.target.value);
+      this.args.todoChangeset.set(targetName, inputEl.value);
     }
 
     if (targetName === 'todoDueDate') {
@@ -68,7 +73,7 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   }
 
   @action
-  async handleSubmit(ev: any) {
+  async handleEdit(ev: any) {
     ev.preventDefault();
 
     await this.args.todoChangeset.save();

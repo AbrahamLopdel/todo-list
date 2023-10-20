@@ -29,6 +29,7 @@ module('Integration | Component | sidebar', function (hooks) {
     const todo: TodoType = {
       id: '1000',
       todoTitle: 'New Todo',
+      todoChecked: false,
     };
 
     await todoLocalStorageService.setTodoList(

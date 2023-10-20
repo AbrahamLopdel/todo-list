@@ -1,44 +1,68 @@
 import Service, { service } from '@ember/service';
 import { action } from '@ember/object';
 import { TrackedArray } from 'tracked-built-ins';
+import { tracked } from '@glimmer/tracking';
 import { TodoType } from 'todo-list/types/todo';
 import TodoLocalStorageService from './todo-local-storage';
+
+export enum Filter {
+  ALL = 'ALL',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+}
 
 export default class TodoService extends Service {
   @service declare todoLocalStorage: TodoLocalStorageService;
 
-  #todoList;
+  static TypeOfFilter = Filter;
+  currentFilter: string;
+
+  #todoList: TrackedArray<TodoType>;
+  @tracked filteredTodoList;
   static #lastID: number;
 
   constructor(properties: object) {
     super(properties);
 
+    this.currentFilter = Filter.ALL;
+
     this.#todoList = this.todoLocalStorage.getTodoList();
+    this.filteredTodoList = [...this.#todoList];
     TodoService.#lastID = parseInt(this.todoLocalStorage.getLastId() || '0');
   }
 
   @action
   addTodo(todoTitle: string) {
-    const todo = {
+    const todo: TodoType = {
       id: (++TodoService.#lastID).toString(),
       todoTitle,
+      todoChecked: false,
     };
     this.#todoList.push(todo);
 
     this.todoLocalStorage.setTodoList(this.#todoList);
     this.todoLocalStorage.setLastId(todo.id);
+
+    if (this.currentFilter != Filter.COMPLETED) {
+      this.filteredTodoList = [...this.filteredTodoList, todo];
+    }
   }
 
   @action
   editTodo(newTodo: TodoType) {
     const lastTodo = this.#todoList.find(
-      (todoInList) => (todoInList as TodoType).id === newTodo.id
+      (todoInList) => todoInList.id === newTodo.id
     );
+
+    console.log(newTodo.todoChecked + ' ' + lastTodo?.todoChecked);
+
     const index = this.#todoList.indexOf(lastTodo!);
 
     this.#todoList[index] = newTodo;
 
     this.todoLocalStorage.setTodoList(this.#todoList);
+
+    this.filterTodoList();
   }
 
   @action
@@ -49,9 +73,30 @@ export default class TodoService extends Service {
     this.#todoList.splice(index, 1);
 
     this.todoLocalStorage.setTodoList(this.#todoList);
+
+    this.filterTodoList();
   }
 
   get todoList(): TrackedArray<TodoType> {
-    return new TrackedArray<TodoType>(this.#todoList);
+    return this.#todoList;
+  }
+
+  @action
+  filterTodoList() {
+    switch (this.currentFilter) {
+      case Filter.ACTIVE:
+        this.filteredTodoList = [
+          ...this.#todoList.filter((todo) => todo.todoChecked === false),
+        ];
+        break;
+      case Filter.COMPLETED:
+        this.filteredTodoList = [
+          ...this.#todoList.filter((todo) => todo.todoChecked === true),
+        ];
+        break;
+      default:
+        this.filteredTodoList = [...this.#todoList];
+        break;
+    }
   }
 }

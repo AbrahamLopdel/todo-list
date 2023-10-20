@@ -45,6 +45,7 @@ module('Integration | Component | sidebar/todo-card', function (hooks) {
     const todoToLocate: TodoType = {
       id: '1000',
       todoTitle: 'New Todo',
+      todoChecked: false,
     };
 
     await todoLocalStorageService.setTodoList(

@@ -9,4 +9,5 @@ export type TodoType = {
     week?: boolean;
     month?: boolean;
   };
+  todoChecked: boolean;
 };

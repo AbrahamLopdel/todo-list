@@ -1,12 +1,15 @@
 {{page-title "Todo List"}}
 
-<div class="grid grid-cols-5 m">
-  <section data-test-sidebar-wrapper class="bg-slate-600 h-screen py-4">
+<div class="grid grid-cols-7">
+  <section
+    data-test-sidebar-wrapper
+    class="fixed bg-slate-600 h-screen py-4 w-60"
+  >
     <Sidebar />
   </section>
   <section
     data-test-addtodo-wrapper
-    class="text-center col-start-2 col-end-6 p-4"
+    class="text-center col-start-3 col-end-7 p-4"
   >
     <AddTodo />
     {{outlet}}

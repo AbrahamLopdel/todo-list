@@ -1,0 +1,23 @@
+<section class="flex justify-around text-slate-400 underline">
+  <button
+    class="hover:text-white"
+    type="button"
+    {{on "click" (fn this.filterBy this.typeOfFilter.ALL)}}
+  >
+    All
+  </button>
+  <button
+    class="hover:text-white"
+    type="button"
+    {{on "click" (fn this.filterBy this.typeOfFilter.ACTIVE)}}
+  >
+    Active
+  </button>
+  <button
+    class="hover:text-white"
+    type="button"
+    {{on "click" (fn this.filterBy this.typeOfFilter.COMPLETED)}}
+  >
+    Completed
+  </button>
+</section>
