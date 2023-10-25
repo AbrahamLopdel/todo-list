@@ -7,6 +7,6 @@ export default class TodoListRoute extends Route {
   @service declare router: RouterService;
 
   beforeModel(transition: Transition<unknown>): void | Promise<unknown> {
-    this.router.transitionTo('index');
+    this.router.transitionTo('/todos');
   }
 }

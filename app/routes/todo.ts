@@ -5,6 +5,7 @@ import { service } from '@ember/service';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
 import { Changeset } from 'ember-changeset';
+import setParamFilter from './helpers/set-param-filter';
 
 export default class TodoRoute extends Route {
   @service declare router: RouterService;
@@ -13,18 +14,19 @@ export default class TodoRoute extends Route {
 
   beforeModel(transition: Transition<unknown>): void | Promise<unknown> {
     const { id } = transition.to.params;
+    let todo;
 
-    if (!id) {
-      this.router.transitionTo('index');
+    if (id) {
+      todo = this.todoService.todoList.find(
+        (todoItem: TodoType) => todoItem.id === id
+      );
     }
 
-    const todo = this.todoService.todoList.find(
-      (todoItem: TodoType) => todoItem.id === id
-    );
-
-    if (!todo) {
-      this.router.transitionTo('index');
+    if (!id || !todo) {
+      this.router.transitionTo('/todos');
     }
+
+    setParamFilter(transition, this.todoService);
   }
 
   model(params: any) {
@@ -33,6 +35,10 @@ export default class TodoRoute extends Route {
     const todo = this.todoService.todoList.find(
       (todoItem: TodoType) => todoItem.id === id
     );
+
+    if (todo) {
+      this.todoService.activeTodo = todo;
+    }
 
     return {
       todoChangeset: Changeset({ ...todo }),

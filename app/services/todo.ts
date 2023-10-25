@@ -4,6 +4,7 @@ import { TrackedArray } from 'tracked-built-ins';
 import { tracked } from '@glimmer/tracking';
 import { TodoType } from 'todo-list/types/todo';
 import TodoLocalStorageService from './todo-local-storage';
+import RouterService from '@ember/routing/router-service';
 
 export enum Filter {
   ALL = 'ALL',
@@ -12,10 +13,13 @@ export enum Filter {
 }
 
 export default class TodoService extends Service {
+  @service declare router: RouterService;
+
   @service declare todoLocalStorage: TodoLocalStorageService;
 
   static TypeOfFilter = Filter;
   currentFilter: string;
+  activeTodo: TodoType | null;
 
   #todoList: TrackedArray<TodoType>;
   @tracked filteredTodoList;
@@ -25,6 +29,7 @@ export default class TodoService extends Service {
     super(properties);
 
     this.currentFilter = Filter.ALL;
+    this.activeTodo = null;
 
     this.#todoList = this.todoLocalStorage.getTodoList();
     this.filteredTodoList = [...this.#todoList];
@@ -53,8 +58,6 @@ export default class TodoService extends Service {
     const lastTodo = this.#todoList.find(
       (todoInList) => todoInList.id === newTodo.id
     );
-
-    console.log(newTodo.todoChecked + ' ' + lastTodo?.todoChecked);
 
     const index = this.#todoList.indexOf(lastTodo!);
 
@@ -97,6 +100,21 @@ export default class TodoService extends Service {
       default:
         this.filteredTodoList = [...this.#todoList];
         break;
+    }
+
+    const isInActiveList =
+      this.currentFilter === Filter.ACTIVE &&
+      this.activeTodo?.todoChecked === false;
+    const isInCompletedList =
+      this.currentFilter === Filter.COMPLETED &&
+      this.activeTodo?.todoChecked === true;
+
+    if (
+      this.currentFilter !== Filter.ALL &&
+      !isInActiveList &&
+      !isInCompletedList
+    ) {
+      this.router.transitionTo('/todos');
     }
   }
 }

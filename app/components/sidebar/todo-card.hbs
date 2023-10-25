@@ -12,13 +12,23 @@
             checked={{this.changeset.todoChecked}}
             {{on "click" this.handleChangeDone}}
           />
-          <h2>{{@todo.todoTitle}}</h2>
+          <h2
+            class={{if
+              (and
+                @todo.todoDueDate
+                (gt
+                  (moment-diff @todo.todoDueDate this.today precision="days") 0
+                )
+              )
+              "text-red-400 group-hover:text-red-700"
+            }}
+          >{{@todo.todoTitle}}</h2>
         </label>
       </form>
       <button
         data-test-delete-button
         type="button"
-        class="rounded-xl p-1 ease-out duration-75 hover:bg-white invisible group-hover:visible w-6"
+        class="rounded-xl p-1 ease-out duration-75 hover:bg-white invisible group-hover:visible w-6 h-min"
         {{on "click" this.removeTodo}}
       >
         <img data-test-delete-icon src="/delete-24.svg" alt="Delete todo" />

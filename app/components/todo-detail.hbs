@@ -32,7 +32,8 @@
     />
   </label>
 
-  <label class="mb-4 w-min">
+  <label class="mb-4 w-min text-2xl font-extralight">
+    Due Date:
     <input
       data-test-input-date
       type="date"
@@ -44,6 +45,14 @@
       {{on "focusout" this.handleEdit}}
     />
   </label>
+  {{#if
+    (and
+      @todo.todoDueDate
+      (gt (moment-diff @todo.todoDueDate this.today precision="days") 0)
+    )
+  }}
+    <p class="mb-4 text-xl font-extralight text-red-300">The todo has expired</p>
+  {{/if}}
 
   {{#if
     (gte (moment-diff this.today @todoChangeset.todoDueDate precision="days") 1)

@@ -1,23 +1,28 @@
 <section class="flex justify-around text-slate-400 underline">
-  <button
+  <LinkTo
     class="hover:text-white"
-    type="button"
+    @route={{this.router.currentRouteName}}
+    @query={{hash kindOfFilter="ALL"}}
     {{on "click" (fn this.filterBy this.typeOfFilter.ALL)}}
   >
     All
-  </button>
-  <button
+  </LinkTo>
+
+  <LinkTo
     class="hover:text-white"
-    type="button"
+    @route={{this.router.currentRouteName}}
+    @query={{hash kindOfFilter="ACTIVE"}}
     {{on "click" (fn this.filterBy this.typeOfFilter.ACTIVE)}}
   >
     Active
-  </button>
-  <button
+  </LinkTo>
+
+  <LinkTo
     class="hover:text-white"
-    type="button"
+    @route={{this.router.currentRouteName}}
+    @query={{hash kindOfFilter="COMPLETED"}}
     {{on "click" (fn this.filterBy this.typeOfFilter.COMPLETED)}}
   >
     Completed
-  </button>
+  </LinkTo>
 </section>

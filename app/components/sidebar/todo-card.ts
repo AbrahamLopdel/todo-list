@@ -3,6 +3,7 @@ import RouterService from '@ember/routing/router-service';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { Changeset } from 'ember-changeset';
+import moment from 'moment';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
 
@@ -15,6 +16,12 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
   @service('todo') declare todoService: TodoService;
 
   changeset = Changeset(this.args.todo);
+  today;
+
+  constructor(owner: unknown, args: any) {
+    super(owner, args);
+    this.today = moment().format('YYYY-MM-DD');
+  }
 
   @action
   handleChangeDone(ev: any) {
