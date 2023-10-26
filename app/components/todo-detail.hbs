@@ -47,8 +47,10 @@
   </label>
   {{#if
     (and
-      @todo.todoDueDate
-      (gt (moment-diff @todo.todoDueDate this.today precision="days") 0)
+      @todoChangeset.todoDueDate
+      (gt
+        (moment-diff @todoChangeset.todoDueDate this.today precision="days") 0
+      )
     )
   }}
     <p class="mb-4 text-xl font-extralight text-red-300">The todo has expired</p>

@@ -45,7 +45,7 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
     );
 
     if (!todo) {
-      this.router.transitionTo('index');
+      this.router.transitionTo('/todo');
     }
   }
 }

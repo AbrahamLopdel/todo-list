@@ -9,7 +9,7 @@
 
 <Sidebar::FilterButtons />
 
-<ul data-test-list-todos class="h-5/6 overflow-y-scroll scrollbar">
+<ul data-test-list-todos class="h-5/6 overflow-y-auto scrollbar">
   {{#each this.todoService.filteredTodoList as |todo|}}
     <li>
       <Sidebar::TodoCard @todo={{todo}} />

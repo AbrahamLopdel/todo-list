@@ -85,7 +85,7 @@ export default class TodoService extends Service {
   }
 
   @action
-  filterTodoList() {
+  filterTodoList(thereIsAFromPage = true) {
     switch (this.currentFilter) {
       case Filter.ACTIVE:
         this.filteredTodoList = [
@@ -112,7 +112,8 @@ export default class TodoService extends Service {
     if (
       this.currentFilter !== Filter.ALL &&
       !isInActiveList &&
-      !isInCompletedList
+      !isInCompletedList &&
+      thereIsAFromPage
     ) {
       this.router.transitionTo('/todos');
     }
