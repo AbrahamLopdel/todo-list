@@ -73,13 +73,39 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   }
 
   @action
-  async handleEdit(ev: any) {
+  async handleEdit(ev: Event) {
     ev.preventDefault();
+    const form = document.getElementById('todo_detail_form') as HTMLFormElement;
+    const inputElement = ev.target as HTMLInputElement;
+
+    if (inputElement.validity.valueMissing) {
+      inputElement.setCustomValidity('Element Missed');
+    } else {
+      inputElement.setCustomValidity('');
+    }
+
+    if (!inputElement.checkValidity()) {
+      inputElement.reportValidity();
+      return;
+    }
 
     await this.args.todoChangeset.save();
 
     if (!this.args.todoChangeset.changes.length) {
       this.todoService.editTodo(this.args.todoChangeset.data as TodoType);
     }
+
+    // form.submit();
   }
+
+  // @action
+  // async editFormSubmit(ev: Event) {
+  //   ev.preventDefault();
+
+  //   await this.args.todoChangeset.save();
+
+  //   if (!this.args.todoChangeset.changes.length) {
+  //     this.todoService.editTodo(this.args.todoChangeset.data as TodoType);
+  //   }
+  // }
 }

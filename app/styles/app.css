@@ -1,5 +1,5 @@
-@import "ember-modal-dialog/ember-modal-structure.css";
-@import "ember-modal-dialog/ember-modal-appearance.css";
+@import url("ember-modal-dialog/ember-modal-structure.css");
+@import url("ember-modal-dialog/ember-modal-appearance.css");
 
 body {
   font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;

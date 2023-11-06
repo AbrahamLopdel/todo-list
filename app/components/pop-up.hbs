@@ -1,0 +1,14 @@
+<dialog
+  class="{{if (is-equal this.alignment 'right') 'w-0 relative float-right'}}
+    {{if (is-equal this.alignment 'center') 'top-2/4 -translate-y-2/4'}}"
+  {{on-click-outside @onClickOutside}}
+  open
+>
+  <div
+    class="w-fit border border-slate-400 rounded-xl shadow-xl
+      {{if (is-equal this.alignment 'right') '-translate-y-full'}}
+      {{@wrapperClass}}"
+  >
+    {{yield}}
+  </div>
+</dialog>

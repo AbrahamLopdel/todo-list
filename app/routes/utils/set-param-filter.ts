@@ -16,9 +16,6 @@ export default (transition: Transition<unknown>, todoService: TodoService) => {
       kindOfFilter = todoService.currentFilter;
 
       transition.to.queryParams['kindOfFilter'] = todoService.currentFilter;
-      // this.router.transitionTo(`/todo/${id}`, {
-      //   queryParams: { kindOfFilter },
-      // });
     }
 
     if (kindOfFilter !== Filter.ALL) {

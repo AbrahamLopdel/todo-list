@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import Transition from '@ember/routing/transition';
 import TodoService from 'todo-list/services/todo';
-import setParamFilter from './helpers/set-param-filter';
+import setParamFilter from './utils/set-param-filter';
 
 export default class TodoListRoute extends Route {
   @service('todo') declare todoService: TodoService;

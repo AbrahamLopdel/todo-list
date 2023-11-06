@@ -5,7 +5,7 @@ import { service } from '@ember/service';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
 import { Changeset } from 'ember-changeset';
-import setParamFilter from './helpers/set-param-filter';
+import setParamFilter from './utils/set-param-filter';
 
 export default class TodoRoute extends Route {
   @service declare router: RouterService;

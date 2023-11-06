@@ -1,10 +1,15 @@
-<img
-  data-test-edit-icon
-  class="w-6 right-4 absolute"
-  src="/edit-18.svg"
-  alt="Edit todo"
-/>
-<form class="flex flex-col items-center">
+<form
+  id="todo_detail_form"
+  class="flex flex-col items-center"
+  {{on "input" this.handleChangeTodo}}
+  {{on "focusout" this.handleEdit}}
+>
+  <img
+    data-test-edit-icon
+    class="w-6 right-4 absolute"
+    src="/edit-18.svg"
+    alt="Edit todo"
+  />
   <label class="w-min">
     <input
       data-test-input-title
@@ -13,8 +18,9 @@
       name="todoTitle"
       value={{@todoChangeset.todoTitle}}
       class="text-center text-5xl font-extralight"
-      {{on "input" this.handleChangeTodo}}
-      {{on "focusout" this.handleEdit}}
+      required
+      minlength="2"
+      maxlength="19"
     />
   </label>
   <label class="my-4 w-min">
@@ -27,8 +33,6 @@
       cols="50"
       value={{@todoChangeset.todoDescription}}
       class="border border-neutral-200 rounded-lg resize-none p-2 text-lg font-extralight"
-      {{on "input" this.handleChangeTodo}}
-      {{on "focusout" this.handleEdit}}
     />
   </label>
 
@@ -41,8 +45,6 @@
       min={{this.today}}
       class="border border-neutral-200 rounded-lg p-2 text-lg font-extralight"
       value={{@todoChangeset.todoDueDate}}
-      {{on "input" this.handleChangeTodo}}
-      {{on "focusout" this.handleEdit}}
     />
   </label>
   {{#if
@@ -69,8 +71,6 @@
             type="checkbox"
             name="notification.oneDay"
             checked={{@todoChangeset.todoNotification.oneDay}}
-            {{on "input" this.handleChangeTodo}}
-            {{on "focusout" this.handleEdit}}
           />
         </label>
 
@@ -87,8 +87,6 @@
               type="checkbox"
               name="notification.threeDays"
               checked={{@todoChangeset.todoNotification.threeDays}}
-              {{on "input" this.handleChangeTodo}}
-              {{on "focusout" this.handleEdit}}
             />
           </label>
         {{/if}}
@@ -106,8 +104,6 @@
               type="checkbox"
               name="notification.week"
               checked={{@todoChangeset.todoNotification.week}}
-              {{on "input" this.handleChangeTodo}}
-              {{on "focusout" this.handleEdit}}
             />
           </label>
         {{/if}}
@@ -125,8 +121,6 @@
               type="checkbox"
               name="notification.month"
               checked={{@todoChangeset.todoNotification.month}}
-              {{on "input" this.handleChangeTodo}}
-              {{on "focusout" this.handleEdit}}
             />
           </label>
         {{/if}}

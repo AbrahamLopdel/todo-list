@@ -2,7 +2,16 @@
   <div
     class="group pt-3 text-black ease-out rounded-sm duration-300 hover:bg-slate-300"
   >
-    <section class="pl-2 grid grid-cols-5 text-left">
+    <section
+      class="pl-2 grid grid-cols-5 text-left
+        {{if
+          (and
+            @todo.todoDueDate
+            (gt (moment-diff @todo.todoDueDate this.today precision="days") 0)
+          )
+          'text-red-400 group-hover:text-red-700'
+        }}"
+    >
       <h3>{{@todo.todoTitle}}</h3>
       <h3>{{@todo.todoDescription}}</h3>
       <h3>{{@todo.todoDueDate}}</h3>
@@ -11,36 +20,64 @@
       {{else}}
         <img src="/highlight-off-24.svg" alt="Todo not done yet" />
       {{/if}}
-      <img
-        class="text-right block mr-10 p-1 m-auto rounded-lg duration-300 hover:bg-slate-100"
-        src="/more-vert-24.svg"
-        alt="Actions"
-        {{on "click" this.switchPopUpActions}}
-      />
+      <button type="button" {{on "click" (fn this.switchPopUp "actions")}}>
+        <img
+          class="text-right block mr-10 p-1 m-auto rounded-lg duration-300 hover:bg-slate-100"
+          src="/more-vert-24.svg"
+          alt="Actions"
+        />
+      </button>
     </section>
 
     <hr class="border-slate-300 mt-3" />
   </div>
 
   {{#if this.popUpActionsIsOpened}}
-    <div class="w-min relative left-full bottom-14">
-      <ModalDialog
-        @renderInPlace={{true}}
-        @clickOutsideToClose={{true}}
-        @containerClass="absolute"
+    <PopUp
+      @alignment="right"
+      @wrapperClass="overflow-hidden"
+      @onClickOutside={{fn this.switchPopUp "actions"}}
+    >
+      <button
+        class="w-24 h-8 duration-300 hover:bg-slate-300"
+        type="button"
+        {{on "click" (fn this.switchPopUp "edit")}}
       >
-        <div>
-          <button type="button" {{on "click" this.switchPopUpEdit}}>
-            Edit
-          </button>
-        </div>
-      </ModalDialog>
-    </div>
+        Edit
+      </button>
+
+      <hr class="border-slate-300" />
+      <button
+        class="w-24 h-8 duration-300 hover:bg-slate-300"
+        type="button"
+        {{on "click" (fn this.switchPopUp "remove")}}
+      >
+        Delete
+      </button>
+    </PopUp>
   {{/if}}
 </section>
 
 {{#if this.popUpEditIsOpened}}
-  <ModalDialog @clickOutsideToClose={{true}}>
+  <PopUp @wrapperClass="p-4" @onClickOutside={{fn this.switchPopUp "edit"}}>
     <TodoDetail @todoChangeset={{this.changeset}} />
-  </ModalDialog>
+  </PopUp>
+{{/if}}
+
+{{#if this.popUpRemoveIsOpened}}
+  <PopUp @wrapperClass="p-4" @onClickOutside={{fn this.switchPopUp "remove"}}>
+    <h1 class="text-xl font-bold">
+      Do you want to remove the todo permanently?
+    </h1>
+    <button
+      class="w-24 h-8 duration-300 hover:bg-slate-300"
+      type="button"
+      {{on "click" this.removeTodo}}
+    >Yes</button>
+    <button
+      class="w-24 h-8 duration-300 hover:bg-slate-300"
+      type="button"
+      {{on "click" (fn this.switchPopUp "remove")}}
+    >No</button>
+  </PopUp>
 {{/if}}
