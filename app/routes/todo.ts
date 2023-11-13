@@ -4,8 +4,7 @@ import Transition from '@ember/routing/transition';
 import { service } from '@ember/service';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
-import { Changeset } from 'ember-changeset';
-import setParamFilter from './utils/set-param-filter';
+import { setParamFilter } from 'todo-list/utils/routes-utils';
 
 export default class TodoRoute extends Route {
   @service declare router: RouterService;
@@ -20,10 +19,14 @@ export default class TodoRoute extends Route {
       todo = this.todoService.todoList.find(
         (todoItem: TodoType) => todoItem.id === id
       );
+
+      if (todo) {
+        this.todoService.activeTodo = todo;
+      }
     }
 
     if (!id || !todo) {
-      this.router.transitionTo('/todos');
+      this.router.transitionTo('todo-list');
     }
 
     setParamFilter(transition, this.todoService);
@@ -36,12 +39,8 @@ export default class TodoRoute extends Route {
       (todoItem: TodoType) => todoItem.id === id
     );
 
-    if (todo) {
-      this.todoService.activeTodo = todo;
-    }
-
     return {
-      todoChangeset: Changeset({ ...todo }),
+      todo: todo,
     };
   }
 }

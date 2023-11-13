@@ -1,7 +1,8 @@
 <dialog
+  id="dialog-pop-up"
   class="{{if (is-equal this.alignment 'right') 'w-0 relative float-right'}}
     {{if (is-equal this.alignment 'center') 'top-2/4 -translate-y-2/4'}}"
-  {{on-click-outside @onClickOutside}}
+  {{click-outside @onClickOutside}}
   open
 >
   <div

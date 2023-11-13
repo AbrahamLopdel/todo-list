@@ -48,4 +48,8 @@ export default class SidebarTodoCardComponent extends Component<SidebarTodoCardA
       this.router.transitionTo('/todo');
     }
   }
+
+  get filter() {
+    return this.todoService.currentFilter;
+  }
 }

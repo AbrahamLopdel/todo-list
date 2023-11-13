@@ -10,5 +10,5 @@ Router.map(function () {
   this.route('todo-list', { path: '/todos' });
   this.route('todo', { path: '/todo/:id' });
   this.route('redirect', { path: '/*path' });
-  // this.route('redirect', { path: '/' });
+  this.route('redirect', { path: '/' });
 });

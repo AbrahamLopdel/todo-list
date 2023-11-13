@@ -2,7 +2,6 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { Changeset } from 'ember-changeset';
 import TodoService from 'todo-list/services/todo';
 import { TodoType } from 'todo-list/types/todo';
 
@@ -18,7 +17,7 @@ interface TodoListViewTodoRowArgs {
 
 export default class TodoListViewTodoRow extends Component<TodoListViewTodoRowArgs> {
   @service('todo') declare todoService: TodoService;
-  changeset = Changeset({ ...this.args.todo });
+  todo = { ...this.args.todo };
 
   @tracked popUpActionsIsOpened = false;
   @tracked popUpEditIsOpened = false;
@@ -31,6 +30,8 @@ export default class TodoListViewTodoRow extends Component<TodoListViewTodoRowAr
         this.popUpActionsIsOpened = !this.popUpActionsIsOpened;
         break;
       case 'edit':
+        console.log(this.popUpEditIsOpened);
+
         this.popUpEditIsOpened = !this.popUpEditIsOpened;
         break;
       case 'remove':

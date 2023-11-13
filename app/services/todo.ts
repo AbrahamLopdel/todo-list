@@ -110,6 +110,7 @@ export default class TodoService extends Service {
       this.activeTodo?.todoChecked === true;
 
     if (
+      this.currentFilter &&
       this.currentFilter !== Filter.ALL &&
       !isInActiveList &&
       !isInCompletedList &&

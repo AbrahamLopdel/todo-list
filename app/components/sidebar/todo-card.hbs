@@ -1,4 +1,9 @@
-<LinkTo data-test-card-wrapper-link @route="todo" @model={{@todo.id}}>
+<LinkTo
+  data-test-card-wrapper-link
+  @route="todo"
+  @query={{hash kindOfFilter=this.filter}}
+  @model={{@todo.id}}
+>
   <div
     class="group px-4 pt-3 text-white ease-out duration-300 hover:bg-slate-400 hover:text-black"
   >

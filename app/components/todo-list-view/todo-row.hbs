@@ -60,7 +60,7 @@
 
 {{#if this.popUpEditIsOpened}}
   <PopUp @wrapperClass="p-4" @onClickOutside={{fn this.switchPopUp "edit"}}>
-    <TodoDetail @todoChangeset={{this.changeset}} />
+    <TodoDetail @todo={{this.todo}} />
   </PopUp>
 {{/if}}
 
