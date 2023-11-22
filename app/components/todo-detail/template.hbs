@@ -1,0 +1,112 @@
+<Common::ValidForm
+  @id="todo_detail_form"
+  @event="focusout"
+  @handleEdit={{this.handleEdit}}
+  as |checkIsValid|
+>
+  <img
+    data-test-edit-icon
+    class="w-6 right-4 absolute"
+    src="/edit-18.svg"
+    alt="Edit todo"
+  />
+  <label class="w-min">
+    <Common::ValidForm::InputField
+      @type="text"
+      @placeholder="Change the title"
+      @name="todoTitle"
+      @value={{@todo.todoTitle}}
+      @required={{true}}
+      @minlength={{2}}
+      @maxlength={{19}}
+      @locator="input-title"
+      @handleCheckValid={{checkIsValid}}
+      @customValidationMessages={{this.validationsTitle}}
+    />
+  </label>
+  <label class="my-4 w-min">
+    <Common::ValidForm::InputField
+      @type="textarea"
+      @placeholder="Write a description..."
+      @name="todoDescription"
+      @value={{@todo.todoDescription}}
+      @maxlength={{160}}
+      @locator="input-description"
+    />
+  </label>
+
+  <label class="mb-4 w-min text-2xl font-extralight">
+    Due Date:
+    <Common::ValidForm::InputField
+      @type="date"
+      @name="todoDueDate"
+      @minDate={{this.today}}
+      @value={{@todo.todoDueDate}}
+      @locator="input-due-date"
+      @handleInputChange={{this.handleInputChangeDueDate}}
+    />
+  </label>
+
+  {{#if
+    (and
+      @todo.todoDueDate
+      (gt (moment-diff this.dueDate this.today precision="days") 0)
+    )
+  }}
+    <p class="mb-4 text-xl font-extralight text-red-300">The todo has expired</p>
+  {{/if}}
+
+  {{#if (gte (moment-diff this.today this.dueDate precision="days") 1)}}
+    <div>
+      <p class="text-lg">Notification:</p>
+      <div class="flex flex-row">
+        <label data-test-label-notif-one-day class="flex flex-row m-4">
+          One day before
+          <Common::ValidForm::InputField
+            @type="checkbox"
+            @name="notification.oneDay"
+            @value={{@todo.todoNotification.oneDay}}
+            @locator="checkbox-one-day"
+          />
+        </label>
+
+        {{#if (gte (moment-diff this.today this.dueDate precision="days") 3)}}
+          <label data-test-label-notif-three-days class="flex flex-row m-4">
+            Three days before
+            <Common::ValidForm::InputField
+              @type="checkbox"
+              @name="notification.threeDays"
+              @value={{@todo.todoNotification.threeDays}}
+              @locator="checkbox-three-days"
+            />
+          </label>
+        {{/if}}
+
+        {{#if (gte (moment-diff this.today this.dueDate precision="days") 7)}}
+          <label data-test-label-notif-week class="flex flex-row m-4">
+            One week before
+            <Common::ValidForm::InputField
+              @type="checkbox"
+              @name="notification.week"
+              @value={{@todo.todoNotification.week}}
+              @locator="checkbox-week"
+            />
+          </label>
+        {{/if}}
+
+        {{#if (gte (moment-diff this.today this.dueDate precision="days") 30)}}
+          <label data-test-label-notif-month class="flex flex-row m-4">
+            One month before
+            <Common::ValidForm::InputField
+              @type="checkbox"
+              @name="notification.month"
+              @value={{@todo.todoNotification.month}}
+              @locator="checkbox-month"
+            />
+          </label>
+        {{/if}}
+
+      </div>
+    </div>
+  {{/if}}
+</Common::ValidForm>

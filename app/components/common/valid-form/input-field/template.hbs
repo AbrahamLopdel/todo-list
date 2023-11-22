@@ -1,0 +1,65 @@
+{{#if (eq @type "text")}}
+  <input
+    data-test-input-title
+    id={{@locator}}
+    type="text"
+    placeholder={{@placeholder}}
+    name={{@name}}
+    value={{@value}}
+    class="text-center text-5xl font-extralight rounded-md
+      {{if (eq this.isValid false) 'border-2 border-red-400'}}"
+    required={{@required}}
+    minlength={{@minlength}}
+    maxlength={{@maxlength}}
+    {{on "input" this.handleChange}}
+    {{on "focusout" this.checkValidations}}
+  />
+{{/if}}
+
+{{#if (eq @type "textarea")}}
+  <textarea
+    data-test-input-description
+    id={{@locator}}
+    placeholder={{@placeholder}}
+    name={{@name}}
+    required={{@required}}
+    minlength={{@minlength}}
+    maxlength={{@maxlength}}
+    rows="6"
+    cols="50"
+    value={{@value}}
+    class="border border-neutral-200 rounded-lg resize-none p-2 text-lg font-extralight
+      {{if (eq this.isValid false) 'border-2 border-red-400'}}"
+    {{on "input" this.handleChange}}
+    {{on "focusout" this.checkValidations}}
+  />
+{{/if}}
+
+{{#if (eq @type "date")}}
+  <input
+    data-test-input-date
+    id={{@locator}}
+    type="date"
+    name={{@name}}
+    min={{@minDate}}
+    required={{@required}}
+    value={{@value}}
+    class="border border-neutral-200 rounded-lg p-2 text-lg font-extralight
+      {{if (eq this.isValid false) 'border-2 border-red-400'}}"
+    {{on "input" this.handleChange}}
+    {{on "focusout" this.checkValidations}}
+  />
+{{/if}}
+
+{{#if (eq @type "checkbox")}}
+  <input
+    id={{@locator}}
+    class="ml-2 {{if (eq this.isValid false) 'border-2 border-red-400'}}"
+    type="checkbox"
+    name={{@name}}
+    checked={{@value}}
+    {{on "input" this.handleChange}}
+    {{on "focusout" this.checkValidations}}
+  />
+{{/if}}
+<p id="error-{{@locator}}" class="text-red-400"></p>

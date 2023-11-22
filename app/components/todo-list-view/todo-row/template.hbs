@@ -33,7 +33,7 @@
   </div>
 
   {{#if this.popUpActionsIsOpened}}
-    <PopUp
+    <Common::PopUp
       @alignment="right"
       @wrapperClass="overflow-hidden"
       @onClickOutside={{fn this.switchPopUp "actions"}}
@@ -54,18 +54,24 @@
       >
         Delete
       </button>
-    </PopUp>
+    </Common::PopUp>
   {{/if}}
 </section>
 
 {{#if this.popUpEditIsOpened}}
-  <PopUp @wrapperClass="p-4" @onClickOutside={{fn this.switchPopUp "edit"}}>
+  <Common::PopUp
+    @wrapperClass="p-4"
+    @onClickOutside={{fn this.switchPopUp "edit"}}
+  >
     <TodoDetail @todo={{this.todo}} />
-  </PopUp>
+  </Common::PopUp>
 {{/if}}
 
 {{#if this.popUpRemoveIsOpened}}
-  <PopUp @wrapperClass="p-4" @onClickOutside={{fn this.switchPopUp "remove"}}>
+  <Common::PopUp
+    @wrapperClass="p-4"
+    @onClickOutside={{fn this.switchPopUp "remove"}}
+  >
     <h1 class="text-xl font-bold">
       Do you want to remove the todo permanently?
     </h1>
@@ -79,5 +85,5 @@
       type="button"
       {{on "click" (fn this.switchPopUp "remove")}}
     >No</button>
-  </PopUp>
+  </Common::PopUp>
 {{/if}}

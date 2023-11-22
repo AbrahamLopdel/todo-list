@@ -1,0 +1,8 @@
+<form
+  id={{@id}}
+  class="flex flex-col items-center"
+  {{on "focusout" this.onEdit}}
+  {{!-- {{on this.kindOfEvent this.onEdit}} --}}
+>
+  {{yield this.checkIsValid}}
+</form>

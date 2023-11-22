@@ -5,6 +5,8 @@ import TodoService from 'todo-list/services/todo';
 import moment from 'moment';
 import { TodoType } from 'todo-list/types/todo';
 import { tracked } from '@glimmer/tracking';
+import { isNone } from '@ember/utils';
+import { ErrorCustomValidation } from 'todo-list/utils/validations';
 
 interface TodoDetailArgs {
   todo: TodoType;
@@ -22,34 +24,25 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   today;
   @tracked currentDueDate: Date;
   oldDueDate: Date;
+  validationsTitle: ErrorCustomValidation;
 
   constructor(owner: unknown, args: TodoDetailArgs) {
     super(owner, args);
     this.today = moment().format('YYYY-MM-DD');
     this.currentDueDate = args.todo.todoDueDate!;
     this.oldDueDate = args.todo.todoDueDate!;
+    this.validationsTitle = {
+      validationError: 'valueMissing',
+      customMessage: 'Element Missed',
+    };
   }
 
+  //#region Todo Edition
   @action
   handleInputChangeDueDate(ev: InputEvent) {
     const inputElement = ev.target as HTMLInputElement;
     this.currentDueDate = new Date(inputElement.value);
-  }
-
-  //#region Todo Edition
-  validateInput(inputElement: HTMLInputElement): boolean {
-    if (inputElement.validity.valueMissing) {
-      inputElement.setCustomValidity('Element Missed');
-    } else {
-      inputElement.setCustomValidity('');
-    }
-
-    if (!inputElement.checkValidity()) {
-      inputElement.reportValidity();
-      return false;
-    }
-
-    return true;
+    this.removeOutdateNotifications(this.currentDueDate);
   }
 
   normalizeNotificationObject(inputEl: HTMLInputElement, values: TodoType) {
@@ -76,19 +69,19 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
     return formValues;
   }
 
-  removeOutdateNotifications() {
+  removeOutdateNotifications(date: Date) {
     //  It changes notifications to false if it was true, but date is less than neccesary to display that notification
-    const diffDays = moment(this.args.todo.todoDueDate).diff(
-      this.today,
-      'days'
-    );
+    const diffDays = moment(date).diff(this.today, 'days');
     for (const [nameNotification, numberOfDays] of daysAllowedForNotification) {
       if (this.args.todo.todoNotification) {
-        const thereIsANotification: boolean =
-          !!this.args.todo.todoNotification[
+        const thereIsANotification: boolean | undefined =
+          this.args.todo.todoNotification[
             nameNotification as keyof typeof this.args.todo.todoNotification
           ];
-        if (thereIsANotification && numberOfDays > diffDays) {
+        if (
+          (thereIsANotification || isNone(thereIsANotification)) &&
+          numberOfDays > diffDays
+        ) {
           this.args.todo.todoNotification[
             nameNotification as keyof typeof this.args.todo.todoNotification
           ] = false;
@@ -98,36 +91,23 @@ export default class TodoDetailComponent extends Component<TodoDetailArgs> {
   }
 
   @action
-  async handleEdit(ev: Event) {
-    ev.preventDefault();
-    const inputElement = ev.target as HTMLInputElement;
+  async handleEdit() {
+    const form = document.getElementById('todo_detail_form') as HTMLFormElement;
 
-    const isValid = this.validateInput(inputElement);
-
-    if (isValid) {
-      const form = document.getElementById(
-        'todo_detail_form'
-      ) as HTMLFormElement;
-
-      let formValues!: TodoType;
-      for (const input of form) {
-        const inputElement = input as HTMLInputElement;
-        formValues = {
-          ...formValues,
-          ...this.normalizeNotificationObject(inputElement, formValues),
-        };
-      }
-
-      if (inputElement.name == 'todoDueDate') {
-        this.removeOutdateNotifications();
-      }
-
-      const id: string = this.args.todo.id;
-      const todoChecked: boolean = this.args.todo.todoChecked;
-      formValues = { ...formValues, id, todoChecked };
-
-      this.todoService.editTodo(formValues);
+    let formValues!: TodoType;
+    for (const input of form) {
+      const inputElement = input as HTMLInputElement;
+      formValues = {
+        ...formValues,
+        ...this.normalizeNotificationObject(inputElement, formValues),
+      };
     }
+
+    const id: string = this.args.todo.id;
+    const todoChecked: boolean = this.args.todo.todoChecked;
+    formValues = { ...formValues, id, todoChecked };
+
+    this.todoService.editTodo(formValues);
   }
   //#endregion
 
